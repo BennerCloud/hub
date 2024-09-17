@@ -2,9 +2,11 @@ pipeline {
     agent any
 
     stages{
-        stage ('Inicial'){
+        stage ('Build Image'){
             steps{
-                echo 'qualquer mensagem' 
+                script{
+                    dockerapp = docker.Build("bennerleon/hub" , '-f ./src/Dockerfile ./src')
+                }
             }
         }
     }
