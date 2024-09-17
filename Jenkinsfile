@@ -3,9 +3,9 @@ pipeline {
 
     stages{
         stage ('Inicial'){
-            steps(
+            steps{
                 echo 'qualquer mensagem' 
-            )
+            }
         }
     }
 }
