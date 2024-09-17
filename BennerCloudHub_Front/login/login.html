@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" class="custom-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Login</title>
+    <link rel="stylesheet" href="login.css"> <!-- Adicionando o estilo CSS -->
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Microsoft Login</h1>
+            <!-- Div para exibir o fluxo de login -->
+            <div id="msalLogin"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://alcdn.msauth.net/browser/2.18.0/js/msal-browser.min.js"></script>
+    <script>
+        // Configuração do cliente MSAL
+        const msalConfig = {
+            auth: {
+                clientId: 'a21baf83-0749-40e9-a74c-14f5aa0b2d92', // ID do cliente do seu aplicativo registrado no Azure AD
+                authority: 'https://login.microsoftonline.com/f2ce1c50-7859-4657-b05c-5b6611a988c3', // URL do locatário do Azure AD
+                redirectUri: 'http://localhost:3000' // URI de redirecionamento após o login
+            },
+            cache: {
+                cacheLocation: "localStorage",
+                storeAuthStateInCookie: true
+            }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        // Configuração para exibir o fluxo de login
+        const loginRequest = {
+            scopes: ["openid", "profile", "User.Read"],
+        };
+
+        // Carrega o fluxo de login assim que a página carregar
+        window.onload = async () => {
+            try {
+                // Solicita o login e obtém o token de acesso
+                const response = await msalInstance.loginRedirect(loginRequest);
+                console.log('Access Token:', response.accessToken);
+                // Você pode adicionar mais ações aqui, como redirecionar para outra página ou exibir conteúdo adicional após o login
+            } catch (error) {
+                console.error(error);
+            }
+        };
+    </script>
+</body>
+</html>
